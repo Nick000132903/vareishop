@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LarDoAnimal — Produtos e dicas para seu pet</title>
+  <meta name="description" content="LarDoAnimal: recomendações honestas de produtos para cães e gatos com os melhores preços." />
+  <link rel="icon" href="src/favicon.png" />
+
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand:  { DEFAULT: '#FF8C42', dark: '#E07030', light: '#FFF0E6' },
+            leaf:   { DEFAULT: '#4CAF50', dark: '#388E3C', light: '#E8F5E9' },
+            ink:    '#1C1C1C',
+            canvas: '#F9F6F0',
+            muted:  '#6B7280',
+            bord:   '#EDE8E0',
+          },
+          fontFamily: { sans: ['Poppins', 'sans-serif'] },
+          boxShadow: {
+            card: '0 2px 12px rgba(0,0,0,0.08)',
+            lift: '0 8px 30px rgba(0,0,0,0.13)',
+          },
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    body { font-family: 'Poppins', sans-serif; background-color: #F9F6F0; }
+
+    .product-card { transition: transform .22s ease, box-shadow .22s ease; }
+    .product-card:hover { transform: translateY(-5px); box-shadow: 0 12px 36px rgba(0,0,0,.13); }
+    .product-card img { transition: transform .35s ease; }
+    .product-card:hover img { transform: scale(1.04); }
+
+    #mobile-menu { max-height: 0; overflow: hidden; transition: max-height .3s ease; }
+    #mobile-menu.open { max-height: 300px; }
+
+    #back-to-top { opacity: 0; pointer-events: none; transition: opacity .25s ease; }
+    #back-to-top.visible { opacity: 1; pointer-events: auto; }
+  </style>
+</head>
+<body class="text-ink antialiased">
+
+  <!-- NAVBAR -->
+  <header id="home" class="sticky top-0 z-50 bg-white border-b border-bord shadow-sm">
+    <div class="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between">
+      <a href="#home" class="flex items-center gap-2 text-[#FF8C42] font-extrabold text-xl tracking-tight select-none">
+        <img src="src/favicon.png" alt="Lar do animal logo" class="w-10 h-10"><span>LarDoAnimal</span>
+      </a>
+      <nav class="hidden md:flex items-center gap-8">
+        <a href="#home"     class="text-sm font-semibold text-muted hover:text-[#FF8C42] transition-colors">Home</a>
+        <a href="#produtos" class="text-sm font-semibold text-muted hover:text-[#FF8C42] transition-colors">Produtos</a>
+        <a href="#sobre"    class="text-sm font-semibold text-muted hover:text-[#FF8C42] transition-colors">Sobre</a>
+        <a href="#contato"  class="text-sm font-semibold text-muted hover:text-[#FF8C42] transition-colors">Contato</a>
+      </nav>
+      <button id="hamburger-btn" class="md:hidden flex flex-col gap-1.5 p-1.5" aria-label="Abrir menu" aria-expanded="false">
+        <span class="block w-6 h-0.5 bg-ink rounded transition-all duration-300" id="hb-top"></span>
+        <span class="block w-6 h-0.5 bg-ink rounded transition-all duration-300" id="hb-mid"></span>
+        <span class="block w-6 h-0.5 bg-ink rounded transition-all duration-300" id="hb-bot"></span>
+      </button>
+    </div>
+    <div id="mobile-menu" class="md:hidden bg-white border-t border-bord px-5">
+      <div class="flex flex-col py-4 gap-4">
+        <a href="#home"     class="font-semibold text-sm text-ink hover:text-[#FF8C42] transition-colors" onclick="closeMobileMenu()">Home</a>
+        <a href="#produtos" class="font-semibold text-sm text-ink hover:text-[#FF8C42] transition-colors" onclick="closeMobileMenu()">Produtos</a>
+        <a href="#sobre"    class="font-semibold text-sm text-ink hover:text-[#FF8C42] transition-colors" onclick="closeMobileMenu()">Sobre</a>
+        <a href="#contato"  class="font-semibold text-sm text-ink hover:text-[#FF8C42] transition-colors" onclick="closeMobileMenu()">Contato</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="bg-gradient-to-br from-[#FFF8F2] to-[#FFF0E0] border-b border-bord py-20 px-5 text-center">
+    <div class="max-w-3xl mx-auto">
+      <span class="inline-flex items-center gap-1.5 text-xs font-bold tracking-widest uppercase text-[#FF8C42] bg-[#FF8C42]/10 px-4 py-1.5 rounded-full mb-6">
+        🐶🐱 Para quem ama pets de verdade
+      </span>
+      <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight mb-5">
+        Os melhores produtos<br>para o seu <span class="text-[#FF8C42]">pet</span>
+      </h1>
+      <p class="text-muted text-base sm:text-lg max-w-xl mx-auto mb-9 leading-relaxed">
+        Recomendações honestas, preços incríveis e produtos avaliados por tutores apaixonados.
+      </p>
+      <a href="#produtos"
+        class="inline-block bg-[#FF8C42] hover:bg-[#E07030] text-white font-bold text-base px-10 py-4 rounded-full shadow-[0_4px_18px_rgba(255,140,66,0.35)] hover:shadow-[0_6px_24px_rgba(255,140,66,0.45)] transition-all duration-200 hover:-translate-y-0.5">
+        Ver produtos →
+      </a>
+      <div class="flex flex-wrap justify-center gap-3 mt-10">
+        <span class="inline-flex items-center gap-2 bg-white border border-bord rounded-xl px-4 py-2 text-sm font-semibold shadow-card">🦮 Para cães</span>
+        <span class="inline-flex items-center gap-2 bg-white border border-bord rounded-xl px-4 py-2 text-sm font-semibold shadow-card">🐈 Para gatos</span>
+        <span class="inline-flex items-center gap-2 bg-white border border-bord rounded-xl px-4 py-2 text-sm font-semibold shadow-card">🔒 Links seguros</span>
+        <span class="inline-flex items-center gap-2 bg-white border border-bord rounded-xl px-4 py-2 text-sm font-semibold shadow-card">🛒 Diversas lojas</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRODUTOS -->
+  <section id="produtos" class="py-20 px-5">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-14">
+        <span class="text-xs font-bold tracking-widest uppercase text-[#4CAF50]">🛍️ Em destaque</span>
+        <h2 class="text-3xl sm:text-4xl font-extrabold mt-2 mb-3">Produtos favoritos da comunidade</h2>
+        <p class="text-muted text-sm max-w-md mx-auto">Selecionados com cuidado para o bem-estar e a alegria do seu pet.</p>
+      </div>
+        <!--CARDS PRODUTOS-->
+      <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7"></div>
+    </div>
+  </section>
+
+  <!-- CUPOM PETZ -->
+  <section id="cupom" class="py-16 px-5 border-t border-bord bg-gradient-to-br from-orange-50 to-green-50">
+    <div class="max-w-2xl mx-auto">
+      <div class="bg-white rounded-3xl shadow-lift border border-bord overflow-hidden">
+  
+        <!-- Faixa decorativa topo -->
+        <div class="h-2 bg-gradient-to-r from-[#FF8C42] to-[#4CAF50]"></div>
+  
+        <div class="py-10 px-8 sm:px-12 text-center">
+  
+          <!-- Ícone -->
+          <div class="text-5xl mb-4">🎟️</div>
+  
+          <!-- Eyebrow -->
+          <span class="inline-block text-xs font-bold tracking-widest uppercase text-[#FF8C42] bg-[#FF8C42]/10 px-4 py-1.5 rounded-full mb-4">
+            Oferta exclusiva LarDoAnimal
+          </span>
+  
+          <!-- Título -->
+          <h2 class="text-2xl sm:text-3xl font-extrabold mb-2 leading-snug">
+            Cupom Petz Exclusivo
+          </h2>
+  
+          <!-- Subtítulo -->
+          <p class="text-muted text-sm mb-8">
+            Ganhe desconto na sua primeira compra
+          </p>
+  
+          <!-- Código do cupom -->
+          <div class="flex flex-col sm:flex-row items-center justify-center gap-3 mb-6">
+            <span class="text-xs font-semibold text-muted uppercase tracking-widest">Seu código:</span>
+            <span id="cupom-codigo"
+              class="font-mono font-bold text-xl tracking-[.2em] bg-gray-900 text-white px-6 py-2.5 rounded-xl select-all cursor-pointer border-2 border-dashed border-gray-600 hover:bg-gray-700 transition-colors"
+              title="Clique para copiar"
+              onclick="copiarCupom(this)">
+              LARDOANIMAL
+            </span>
+            <button
+              onclick="copiarCupom(document.getElementById('cupom-codigo'))"
+              class="text-xs font-semibold text-[#FF8C42] border border-[#FF8C42] rounded-full px-4 py-2 hover:bg-[#FF8C42]/10 transition-colors whitespace-nowrap">
+              📋 Copiar
+            </button>
+          </div>
+  
+          <!-- Feedback de cópia (oculto por padrão) -->
+          <p id="cupom-feedback" class="text-xs text-[#4CAF50] font-semibold mb-4 opacity-0 transition-opacity duration-300">
+            ✅ Código copiado!
+          </p>
+  
+          <!-- Descrição -->
+          <p class="text-muted text-xs mb-8">
+            Válido para toda a loja. Não cumulativo com outras ofertas.
+          </p>
+  
+          <!-- Botão CTA -->
+          <!-- ▼ TROQUE o href abaixo pelo seu link de afiliado da Petz — LINK AFILIADO PETZ -->
+          <a href="https://petz.com.br/parceiro/LarDoAnimal"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-block w-full sm:w-auto bg-[#FF8C42] hover:bg-[#E07030] text-white font-bold text-sm px-10 py-4 rounded-full shadow-[0_4px_18px_rgba(255,140,66,0.35)] hover:shadow-[0_6px_24px_rgba(255,140,66,0.45)] transition-all duration-200 hover:-translate-y-0.5 text-center">
+            Comprar na Petz →
+          </a>
+  
+          <!-- Texto auxiliar -->
+          <p class="text-[10px] text-muted mt-4">
+            Ao clicar, você ativa o desconto automaticamente
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOBRE -->
+  <section id="sobre" class="py-20 px-5 border-t border-bord bg-white">
+    <div class="max-w-6xl mx-auto">
+      <div class="grid md:grid-cols-2 gap-14 items-center">
+        <div class="hidden md:flex items-center justify-center bg-gradient-to-br from-[#FF8C42]/10 to-[#4CAF50]/10 rounded-3xl aspect-[4/3] text-8xl border border-bord select-none">
+          🐾
+        </div>
+        <div>
+          <span class="text-xs font-bold tracking-widest uppercase text-[#FF8C42]">Quem somos</span>
+          <h2 class="text-3xl font-extrabold mt-2 mb-4 leading-snug">Um canal feito por<br>tutores para tutores</h2>
+          <p class="text-muted text-sm leading-relaxed mb-4">
+            O <strong class="text-ink">LarDoAnimal</strong> é um site <strong class="text-ink">independente</strong> criado para ajudar tutores de cães e gatos a encontrar os melhores produtos com segurança e economia. Não somos loja — somos um canal de recomendação honesta.
+          </p>
+          <p class="text-muted text-sm leading-relaxed mb-8">
+            Alguns links deste site são <strong class="text-ink">links de afiliado</strong>. Ao comprar por eles, você <strong class="text-ink">não paga nada a mais</strong>, e nós recebemos uma pequena comissão que ajuda a manter o site. Trabalhamos com diversas lojas parceiras como <strong class="text-ink">Petz, Shopee, Mercado Livre e Amazon</strong>. 🙌
+          </p>
+          <div class="flex flex-col gap-4">
+            <div class="flex items-start gap-4">
+              <div class="w-10 h-10 flex-shrink-0 rounded-xl bg-[#4CAF50]/15 flex items-center justify-center text-base">🔍</div>
+              <div>
+                <p class="font-bold text-sm">Pesquisa honesta</p>
+                <p class="text-xs text-muted">Avaliamos cada produto antes de recomendar.</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-4">
+              <div class="w-10 h-10 flex-shrink-0 rounded-xl bg-[#4CAF50]/15 flex items-center justify-center text-base">💚</div>
+              <div>
+                <p class="font-bold text-sm">Bem-estar animal</p>
+                <p class="text-xs text-muted">Só indicamos o que realmente beneficia seu pet.</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-4">
+              <div class="w-10 h-10 flex-shrink-0 rounded-xl bg-[#4CAF50]/15 flex items-center justify-center text-base">💰</div>
+              <div>
+                <p class="font-bold text-sm">Melhor custo-benefício</p>
+                <p class="text-xs text-muted">Comparamos preços para você economizar.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTATO -->
+  <section id="contato" class="py-20 px-5 bg-gradient-to-br from-[#FFF8F2] to-[#F0F9F0] border-t border-bord">
+    <div class="max-w-md mx-auto">
+      <div class="bg-white rounded-2xl border border-bord shadow-card p-10 text-center">
+        <div class="text-5xl mb-4">✉️</div>
+        <h2 class="text-2xl font-extrabold mb-2">Fale com a gente</h2>
+        <p class="text-muted text-sm mb-8 leading-relaxed">
+          Tem dúvida, sugestão de produto ou quer colaborar? A gente responde rapidinho.
+        </p>
+        <div class="flex flex-col gap-3">
+          <a href="mailto:nirabelon9r@gmail.com"
+            class="flex items-center justify-center gap-2.5 font-semibold text-sm text-ink bg-canvas border border-bord rounded-full px-6 py-3 hover:border-[#FF8C42] hover:shadow-[0_0_0_3px_rgba(255,140,66,0.12)] transition-all">
+            📧 nirabelon9r@gmail.com
+          </a>
+          <a href="https://instagram.com/lardoanimal" target="_blank" rel="noopener noreferrer"
+            class="flex items-center justify-center gap-2.5 font-semibold text-sm text-ink bg-canvas border border-bord rounded-full px-6 py-3 hover:border-pink-400 hover:shadow-[0_0_0_3px_rgba(225,48,108,0.12)] transition-all">
+            📸 @lardoanimal no Instagram
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="bg-[#1C1C1C] text-[#9CA3AF] py-12 px-5">
+    <div class="max-w-3xl mx-auto text-center">
+      <p class="text-[#FF8C42] font-extrabold text-lg mb-4">🐾 LarDoAnimal</p>
+      <p class="text-xs leading-relaxed mb-5">
+        Este site participa de <strong class="text-[#D1D5DB]">programas de afiliados de diversas lojas parceiras</strong>.
+        Isso significa que podemos ganhar comissões sobre vendas realizadas através dos nossos links,
+        sem qualquer custo adicional para você. Nossas recomendações são sempre honestas e baseadas
+        na qualidade dos produtos.
+      </p>
+      <p class="text-xs text-[#4B5563]">© 2026 LarDoAnimal — Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+  <!-- BOTÃO VOLTAR AO TOPO -->
+  <button id="back-to-top"
+    class="fixed bottom-6 right-6 w-11 h-11 bg-[#FF8C42] hover:bg-[#E07030] text-white rounded-full flex items-center justify-center text-lg shadow-[0_4px_16px_rgba(255,140,66,0.4)] hover:scale-110 transition-all z-50"
+    aria-label="Voltar ao topo">↑</button>
+
+
+  <script src="main.js"></script>
+</body>
+</html>
