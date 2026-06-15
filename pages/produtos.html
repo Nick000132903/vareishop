@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR" class="scroll-smooth">
+<html lang="pt-BR" class="scroll-smooth dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -11,21 +11,14 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
+      darkMode: 'class',
       theme: {
         extend: {
           colors: {
-            brand:  { DEFAULT: '#6366F1', dark: '#4F46E5', light: '#EEF2FF' },
-            leaf:   { DEFAULT: '#10B981', dark: '#059669', light: '#D1FAE5' },
-            ink:    '#1C1C1C',
-            canvas: '#F9F6F0',
-            muted:  '#6B7280',
-            bord:   '#EDE8E0',
+            primary: { DEFAULT: '#8B5CF6', light: '#A78BFA', dark: '#7C3AED' },
+            dark: { DEFAULT: '#0F0F0F', lighter: '#1A1A1A', card: '#1F1F1F' },
           },
-          fontFamily: { sans: ['Poppins', 'sans-serif'] },
-          boxShadow: {
-            card: '0 2px 12px rgba(0,0,0,0.08)',
-            lift: '0 8px 30px rgba(0,0,0,0.13)',
-          },
+          fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
         }
       }
     }
@@ -34,160 +27,166 @@
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
   <style>
-    body { font-family: 'Poppins', sans-serif; background-color: #F9F6F0; }
-
-    .product-card { transition: transform .22s ease, box-shadow .22s ease; }
-    .product-card:hover { transform: translateY(-5px); box-shadow: 0 12px 36px rgba(0,0,0,.13); }
-    .product-card img { transition: transform .35s ease; }
-    .product-card:hover img { transform: scale(1.04); }
-
+    body { font-family: 'Inter', system-ui, sans-serif; }
+    .product-card { transition: transform .2s ease; }
+    .product-card:hover { transform: translateY(-4px); }
     #mobile-menu { max-height: 0; overflow: hidden; transition: max-height .3s ease; }
-    #mobile-menu.open { max-height: 300px; }
-
-    #back-to-top { opacity: 0; pointer-events: none; transition: opacity .25s ease; }
-    #back-to-top.visible { opacity: 1; pointer-events: auto; }
-
+    #mobile-menu.open { max-height: 400px; }
     .badge-btn { transition: all .2s ease; }
-    .badge-btn.active { background-color: #6366F1; color: white; border-color: #6366F1; }
+    .badge-btn.active { background-color: #8B5CF6; color: white; }
   </style>
 </head>
-<body class="text-ink antialiased">
+<body class="bg-white dark:bg-dark text-gray-900 dark:text-gray-100 transition-colors">
 
   <!-- NAVBAR -->
-  <header class="sticky top-0 z-50 bg-white border-b border-bord shadow-sm">
-    <div class="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between">
-      <a href="index.html" class="flex items-center gap-2 text-[#6366F1] font-extrabold text-xl tracking-tight select-none">
-        <img src="../src/logo.png" alt="VareiShop logo" class="w-40" />
+  <header class="sticky top-0 z-50 bg-white dark:bg-dark-lighter border-b border-gray-200 dark:border-gray-800 backdrop-blur-sm bg-opacity-90 dark:bg-opacity-90">
+    <div class="max-w-7xl mx-auto px-5 h-16 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-2">
+        <img src="../src/logo.png" alt="VareiShop" class="h-8" />
       </a>
-      <nav class="hidden md:flex items-center gap-8">
-        <a href="index.html" class="text-sm font-semibold text-muted hover:text-[#6366F1] transition-colors">Home</a>
-        <a href="produtos.html" class="text-sm font-semibold text-[#6366F1] transition-colors">Produtos</a>
-        <a href="index.html#sobre" class="text-sm font-semibold text-muted hover:text-[#6366F1] transition-colors">Sobre</a>
-        <a href="index.html#contato" class="text-sm font-semibold text-muted hover:text-[#6366F1] transition-colors">Contato</a>
+
+      <nav class="hidden md:flex items-center gap-6">
+        <a href="index.html" class="text-sm font-semibold hover:text-primary transition-colors">Home</a>
+        <a href="produtos.html" class="text-sm font-semibold text-primary">Produtos</a>
+        <a href="index.html#pets" class="text-sm font-semibold hover:text-primary transition-colors">Pets</a>
+        <a href="index.html#contato" class="text-sm font-semibold hover:text-primary transition-colors">Contato</a>
       </nav>
-      <button id="hamburger-btn" class="md:hidden flex flex-col gap-1.5 p-1.5" aria-label="Abrir menu" aria-expanded="false">
-        <span class="block w-6 h-0.5 bg-ink rounded transition-all duration-300" id="hb-top"></span>
-        <span class="block w-6 h-0.5 bg-ink rounded transition-all duration-300" id="hb-mid"></span>
-        <span class="block w-6 h-0.5 bg-ink rounded transition-all duration-300" id="hb-bot"></span>
-      </button>
-    </div>
-    <div id="mobile-menu" class="md:hidden bg-white border-t border-bord px-5">
-      <div class="flex flex-col py-4 gap-4">
-        <a href="index.html" class="font-semibold text-sm text-ink hover:text-[#6366F1] transition-colors" onclick="closeMobileMenu()">Home</a>
-        <a href="produtos.html" class="font-semibold text-sm text-[#6366F1] transition-colors" onclick="closeMobileMenu()">Produtos</a>
-        <a href="index.html#sobre" class="font-semibold text-sm text-ink hover:text-[#6366F1] transition-colors" onclick="closeMobileMenu()">Sobre</a>
-        <a href="index.html#contato" class="font-semibold text-sm text-ink hover:text-[#6366F1] transition-colors" onclick="closeMobileMenu()">Contato</a>
+
+      <div class="flex items-center gap-3">
+        <button id="theme-toggle" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" aria-label="Alternar tema">
+          <svg id="theme-icon-light" class="w-5 h-5 hidden dark:block" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"/>
+          </svg>
+          <svg id="theme-icon-dark" class="w-5 h-5 block dark:hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/>
+          </svg>
+        </button>
+
+        <button id="hamburger-btn" class="md:hidden p-2" aria-label="Menu">
+          <div class="w-6 h-5 flex flex-col justify-between">
+            <span class="block w-full h-0.5 bg-current transition-all" id="hb-1"></span>
+            <span class="block w-full h-0.5 bg-current transition-all" id="hb-2"></span>
+            <span class="block w-full h-0.5 bg-current transition-all" id="hb-3"></span>
+          </div>
+        </button>
       </div>
+    </div>
+
+    <div id="mobile-menu" class="md:hidden bg-white dark:bg-dark-lighter border-t border-gray-200 dark:border-gray-800">
+      <nav class="flex flex-col p-4 gap-3">
+        <a href="index.html" class="text-sm font-semibold hover:text-primary transition-colors">Home</a>
+        <a href="produtos.html" class="text-sm font-semibold text-primary">Produtos</a>
+        <a href="index.html#pets" class="text-sm font-semibold hover:text-primary transition-colors">Pets</a>
+        <a href="index.html#contato" class="text-sm font-semibold hover:text-primary transition-colors">Contato</a>
+      </nav>
     </div>
   </header>
 
-  <!-- HEADER DA PÁGINA -->
-  <section class="bg-gradient-to-br from-[#FFF8F2] to-[#FFF0E0] border-b border-bord py-16 px-5">
-    <div class="max-w-6xl mx-auto text-center">
-      <span class="inline-flex items-center gap-1.5 text-xs font-bold tracking-widest uppercase text-[#6366F1] bg-[#6366F1]/10 px-4 py-1.5 rounded-full mb-4">
-        🛍️ Catálogo completo
-      </span>
-      <h1 class="text-4xl sm:text-5xl font-extrabold leading-tight mb-4">
-        Todos os <span class="text-[#6366F1]">produtos</span>
+  <!-- HEADER -->
+  <section class="py-16 px-5 bg-gradient-to-br from-primary/10 to-primary/5 dark:from-primary/20 dark:to-primary/5 border-b border-gray-200 dark:border-gray-800">
+    <div class="max-w-7xl mx-auto text-center">
+      <h1 class="text-4xl md:text-5xl font-extrabold mb-4">
+        Todos os <span class="text-primary">produtos</span>
       </h1>
-      <p class="text-muted text-base max-w-2xl mx-auto leading-relaxed">
-        Explore nossa seleção completa de produtos com filtros inteligentes e os melhores preços.
-      </p>
+      <p class="text-gray-600 dark:text-gray-400">Encontre exatamente o que você procura</p>
     </div>
   </section>
 
-  <!-- FILTROS E BUSCA -->
-  <section class="py-8 px-5 bg-white border-b border-bord sticky top-16 z-40">
-    <div class="max-w-6xl mx-auto">
+  <!-- FILTROS -->
+  <section class="sticky top-16 z-40 bg-white dark:bg-dark-lighter border-b border-gray-200 dark:border-gray-800 py-6 px-5">
+    <div class="max-w-7xl mx-auto">
       <!-- Busca -->
       <div class="mb-6">
         <input
           type="text"
           id="search-input"
-          placeholder="🔍 Buscar produtos por nome..."
-          class="w-full px-5 py-3 rounded-full border border-bord bg-canvas text-sm focus:outline-none focus:border-[#6366F1] focus:ring-2 focus:ring-[#6366F1]/20 transition-all"
+          placeholder="🔍 Buscar produtos..."
+          class="w-full px-5 py-3 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-dark-card focus:outline-none focus:ring-2 focus:ring-primary transition-all"
         />
       </div>
 
-      <!-- Filtros por Badge -->
-      <div class="mb-4">
-        <p class="text-xs font-bold text-muted uppercase tracking-wider mb-3">Filtrar por loja:</p>
-        <div class="flex flex-wrap gap-2">
-          <button class="badge-btn active px-4 py-2 rounded-full border border-bord bg-white text-xs font-semibold" data-badge="todos">
-            Todas
-          </button>
-          <button class="badge-btn px-4 py-2 rounded-full border border-bord bg-white text-xs font-semibold" data-badge="Shopee">
-            🛒 Shopee
-          </button>
-          <button class="badge-btn px-4 py-2 rounded-full border border-bord bg-white text-xs font-semibold" data-badge="Amazon">
-            📦 Amazon
-          </button>
-          <button class="badge-btn px-4 py-2 rounded-full border border-bord bg-white text-xs font-semibold" data-badge="Mercado Livre">
-            💛 Mercado Livre
-          </button>
-          <button class="badge-btn px-4 py-2 rounded-full border border-bord bg-white text-xs font-semibold" data-badge="Magalu">
-            💙 Magalu
-          </button>
+      <!-- Filtros -->
+      <div class="grid md:grid-cols-2 gap-6">
+        <!-- Filtro por Loja -->
+        <div>
+          <p class="text-xs font-bold uppercase tracking-wider mb-3 text-gray-600 dark:text-gray-400">Loja:</p>
+          <div class="flex flex-wrap gap-2">
+            <button class="badge-btn active px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 text-sm font-semibold" data-badge="todos">
+              Todas
+            </button>
+            <button class="badge-btn px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 text-sm font-semibold" data-badge="Shopee">
+              🛒 Shopee
+            </button>
+            <button class="badge-btn px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 text-sm font-semibold" data-badge="Amazon">
+              📦 Amazon
+            </button>
+            <button class="badge-btn px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 text-sm font-semibold" data-badge="Mercado Livre">
+              💛 Mercado Livre
+            </button>
+            <button class="badge-btn px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 text-sm font-semibold" data-badge="Magalu">
+              💙 Magalu
+            </button>
+          </div>
+        </div>
+
+        <!-- Filtro por Preço -->
+        <div>
+          <p class="text-xs font-bold uppercase tracking-wider mb-3 text-gray-600 dark:text-gray-400">Preço:</p>
+          <div class="flex gap-3 items-center">
+            <input
+              type="number"
+              id="price-min"
+              placeholder="Mín"
+              class="w-28 px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-dark-card text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+            />
+            <span class="text-gray-400">—</span>
+            <input
+              type="number"
+              id="price-max"
+              placeholder="Máx"
+              class="w-28 px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-dark-card text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+            />
+            <button
+              id="apply-price-filter"
+              class="px-4 py-2 bg-primary hover:bg-primary-dark text-white text-sm font-semibold rounded-lg transition-colors">
+              Aplicar
+            </button>
+            <button
+              id="clear-price-filter"
+              class="px-4 py-2 border border-gray-300 dark:border-gray-700 hover:border-primary text-sm font-semibold rounded-lg transition-colors">
+              Limpar
+            </button>
+          </div>
         </div>
       </div>
 
-      <!-- Filtros por Preço -->
-      <div class="flex flex-col sm:flex-row gap-4 items-center">
-        <p class="text-xs font-bold text-muted uppercase tracking-wider">Preço:</p>
-        <div class="flex gap-3 items-center">
-          <input
-            type="number"
-            id="price-min"
-            placeholder="Min"
-            class="w-24 px-3 py-2 rounded-lg border border-bord bg-canvas text-xs focus:outline-none focus:border-[#6366F1] focus:ring-2 focus:ring-[#6366F1]/20"
-          />
-          <span class="text-muted">—</span>
-          <input
-            type="number"
-            id="price-max"
-            placeholder="Max"
-            class="w-24 px-3 py-2 rounded-lg border border-bord bg-canvas text-xs focus:outline-none focus:border-[#6366F1] focus:ring-2 focus:ring-[#6366F1]/20"
-          />
-          <button
-            id="apply-price-filter"
-            class="px-4 py-2 bg-[#6366F1] hover:bg-[#4F46E5] text-white text-xs font-semibold rounded-lg transition-colors">
-            Aplicar
-          </button>
-          <button
-            id="clear-price-filter"
-            class="px-4 py-2 border border-bord hover:border-[#6366F1] text-xs font-semibold rounded-lg transition-colors">
-            Limpar
-          </button>
-        </div>
-      </div>
-
-      <!-- Contador de resultados -->
+      <!-- Contador -->
       <div class="mt-5 text-center">
-        <p id="result-count" class="text-xs text-muted font-medium"></p>
+        <p id="result-count" class="text-sm text-gray-600 dark:text-gray-400 font-medium"></p>
       </div>
     </div>
   </section>
 
   <!-- GRID DE PRODUTOS -->
   <section class="py-12 px-5">
-    <div class="max-w-6xl mx-auto">
-      <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-7 mb-12"></div>
+    <div class="max-w-7xl mx-auto">
+      <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-12"></div>
 
-      <!-- Mensagem quando não há resultados -->
+      <!-- No Results -->
       <div id="no-results" class="hidden text-center py-20">
         <div class="text-6xl mb-4">🔍</div>
         <h3 class="text-xl font-bold mb-2">Nenhum produto encontrado</h3>
-        <p class="text-muted text-sm">Tente buscar com outros termos ou ajuste os filtros.</p>
+        <p class="text-gray-600 dark:text-gray-400 text-sm">Tente ajustar os filtros ou buscar por outros termos.</p>
       </div>
 
       <!-- PAGINAÇÃO -->
       <div id="pagination" class="flex flex-col sm:flex-row items-center justify-center gap-4 mt-12">
         <button
           id="prev-page"
-          class="px-5 py-2.5 bg-white hover:bg-[#6366F1] text-ink hover:text-white border border-bord hover:border-[#6366F1] rounded-full text-sm font-semibold transition-all disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:text-ink">
+          class="px-6 py-2.5 bg-white dark:bg-dark-card hover:bg-primary hover:text-white border border-gray-300 dark:border-gray-700 rounded-xl text-sm font-semibold transition-all disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-white dark:disabled:hover:bg-dark-card disabled:hover:text-current">
           ← Anterior
         </button>
 
@@ -195,7 +194,7 @@
 
         <button
           id="next-page"
-          class="px-5 py-2.5 bg-white hover:bg-[#6366F1] text-ink hover:text-white border border-bord hover:border-[#6366F1] rounded-full text-sm font-semibold transition-all disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:text-ink">
+          class="px-6 py-2.5 bg-white dark:bg-dark-card hover:bg-primary hover:text-white border border-gray-300 dark:border-gray-700 rounded-xl text-sm font-semibold transition-all disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-white dark:disabled:hover:bg-dark-card disabled:hover:text-current">
           Próximo →
         </button>
       </div>
@@ -203,25 +202,18 @@
   </section>
 
   <!-- FOOTER -->
-  <footer class="bg-[#1C1C1C] text-[#9CA3AF] py-12 px-5 mt-20">
-    <div class="max-w-3xl mx-auto text-center">
-      <p class="text-[#6366F1] font-extrabold text-lg mb-4">🛍️ VareiShop</p>
-      <p class="text-xs leading-relaxed mb-5">
-        Este site participa de <strong class="text-[#D1D5DB]">programas de afiliados de diversas lojas parceiras</strong>.
-        Isso significa que podemos ganhar comissões sobre vendas realizadas através dos nossos links,
-        sem qualquer custo adicional para você. Nossas recomendações são sempre honestas e baseadas
-        na qualidade dos produtos.
+  <footer class="bg-dark-lighter dark:bg-black py-12 px-5 border-t border-gray-800">
+    <div class="max-w-4xl mx-auto text-center">
+      <p class="text-primary font-extrabold text-lg mb-4">VareiShop</p>
+      <p class="text-gray-400 text-xs mb-6">
+        Este site participa de programas de afiliados. Podemos receber comissões sobre vendas
+        realizadas através dos nossos links, sem custo adicional para você.
       </p>
-      <p class="text-xs text-[#4B5563]">© 2026 VareiShop — Todos os direitos reservados.</p>
+      <p class="text-gray-600 text-xs">© 2026 VareiShop — Todos os direitos reservados.</p>
     </div>
   </footer>
 
-  <!-- BOTÃO VOLTAR AO TOPO -->
-  <button id="back-to-top"
-    class="fixed bottom-6 right-6 w-11 h-11 bg-[#6366F1] hover:bg-[#4F46E5] text-white rounded-full flex items-center justify-center text-lg shadow-[0_4px_16px_rgba(99,102,241,0.4)] hover:scale-110 transition-all z-50"
-    aria-label="Voltar ao topo">↑</button>
-
-  <script src="../js/utils.js"></script>
+  <script src="../js/theme.js"></script>
   <script src="../js/produtos.js"></script>
 </body>
 </html>

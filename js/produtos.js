@@ -1,5 +1,5 @@
 // ========================================
-// PRODUTOS.JS - VareiShop
+// PRODUTOS.JS - Página de Produtos
 // ========================================
 
 let allProducts = [];
@@ -22,8 +22,6 @@ const filters = {
 document.addEventListener('DOMContentLoaded', () => {
   loadProducts();
   setupEventListeners();
-  setupBackToTop();
-  setupMobileMenu();
 });
 
 // ========================================
@@ -51,7 +49,7 @@ async function loadProducts() {
       <div class="col-span-full text-center py-20">
         <div class="text-6xl mb-4">⚠️</div>
         <h3 class="text-xl font-bold mb-2">Erro ao carregar produtos</h3>
-        <p class="text-muted text-sm">Tente recarregar a página.</p>
+        <p class="text-gray-600 dark:text-gray-400 text-sm">Tente recarregar a página.</p>
       </div>
     `;
   }
@@ -211,39 +209,39 @@ function renderProducts() {
 
 function createProductCard(product) {
   const badgeColors = {
-    'Shopee': 'bg-orange-100 text-orange-700',
-    'Amazon': 'bg-yellow-100 text-yellow-700',
-    'Mercado Livre': 'bg-yellow-100 text-yellow-600',
-    'Magalu': 'bg-blue-100 text-blue-700'
+    'Shopee': 'bg-orange-500/20 text-orange-400 border-orange-500/30',
+    'Amazon': 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30',
+    'Mercado Livre': 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30',
+    'Magalu': 'bg-blue-500/20 text-blue-400 border-blue-500/30'
   };
 
-  const badgeClass = badgeColors[product.badge] || 'bg-gray-100 text-gray-700';
+  const badgeClass = badgeColors[product.badge] || 'bg-gray-500/20 text-gray-400 border-gray-500/30';
 
   return `
-    <article class="product-card bg-white rounded-2xl border border-bord shadow-card overflow-hidden flex flex-col">
-      <div class="relative overflow-hidden bg-gray-50 aspect-square">
+    <article class="product-card bg-white dark:bg-dark-card rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden flex flex-col">
+      <div class="relative overflow-hidden aspect-square bg-gray-100 dark:bg-gray-900">
         <img
           src="${product.img}"
           alt="${product.nome}"
           class="w-full h-full object-cover"
           loading="lazy"
-          onerror="this.src='https://via.placeholder.com/400x400/F2EDE6/AAAAAA?text=Sem+imagem'"
+          onerror="this.src='https://via.placeholder.com/400x400/1F1F1F/8B5CF6?text=VareiShop'"
         />
-        ${product.badge ? `<span class="absolute top-3 left-3 ${badgeClass} text-[10px] font-bold px-3 py-1 rounded-full">${product.badge}</span>` : ''}
+        ${product.badge ? `<span class="absolute top-3 left-3 ${badgeClass} border text-xs font-bold px-3 py-1 rounded-lg backdrop-blur-sm">${product.badge}</span>` : ''}
       </div>
       <div class="p-5 flex flex-col flex-grow">
-        <h3 class="font-bold text-base text-ink mb-2 line-clamp-2 leading-snug min-h-[3rem]">
+        <h3 class="font-bold text-base mb-2 line-clamp-2 min-h-[3rem]">
           ${product.nome}
         </h3>
-        <p class="text-muted text-xs mb-4 line-clamp-2 flex-grow">
+        <p class="text-gray-600 dark:text-gray-400 text-xs mb-4 line-clamp-2 flex-grow">
           ${product.descricao}
         </p>
         <div class="mt-auto">
-          <p class="text-2xl font-extrabold text-[#6366F1] mb-4">
+          <p class="text-2xl font-extrabold text-primary mb-4">
             ${product.preco}
           </p>
           <button
-            class="btn-comprar block w-full bg-[#6366F1] hover:bg-[#4F46E5] text-white text-center font-bold text-sm py-3 rounded-xl transition-all hover:shadow-lg"
+            class="btn-comprar block w-full bg-primary hover:bg-primary-dark text-white text-center font-bold text-sm py-3 rounded-xl transition-all hover:scale-105"
             data-link="${product.link}"
             data-nome="${product.nome}">
             Ver oferta →
@@ -267,7 +265,6 @@ function renderPagination() {
   prevBtn.disabled = currentPage === 1;
   nextBtn.disabled = currentPage === totalPages;
 
-  // Gerar números de página
   pageNumbersContainer.innerHTML = '';
 
   const maxVisiblePages = 5;
@@ -278,28 +275,24 @@ function renderPagination() {
     startPage = Math.max(1, endPage - maxVisiblePages + 1);
   }
 
-  // Botão primeira página
   if (startPage > 1) {
     pageNumbersContainer.innerHTML += createPageButton(1);
     if (startPage > 2) {
-      pageNumbersContainer.innerHTML += '<span class="px-2 text-muted">...</span>';
+      pageNumbersContainer.innerHTML += '<span class="px-2 text-gray-500">...</span>';
     }
   }
 
-  // Botões de páginas visíveis
   for (let i = startPage; i <= endPage; i++) {
     pageNumbersContainer.innerHTML += createPageButton(i);
   }
 
-  // Botão última página
   if (endPage < totalPages) {
     if (endPage < totalPages - 1) {
-      pageNumbersContainer.innerHTML += '<span class="px-2 text-muted">...</span>';
+      pageNumbersContainer.innerHTML += '<span class="px-2 text-gray-500">...</span>';
     }
     pageNumbersContainer.innerHTML += createPageButton(totalPages);
   }
 
-  // Adicionar event listeners
   document.querySelectorAll('.page-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       currentPage = parseInt(btn.dataset.page);
@@ -312,12 +305,12 @@ function renderPagination() {
 function createPageButton(pageNumber) {
   const isActive = pageNumber === currentPage;
   const activeClass = isActive
-    ? 'bg-[#6366F1] text-white border-[#6366F1]'
-    : 'bg-white text-ink border-bord hover:border-[#6366F1] hover:text-[#6366F1]';
+    ? 'bg-primary text-white border-primary'
+    : 'bg-white dark:bg-dark-card border-gray-300 dark:border-gray-700 hover:border-primary hover:text-primary';
 
   return `
     <button
-      class="page-btn w-10 h-10 ${activeClass} border rounded-full text-sm font-semibold transition-all ${isActive ? '' : 'hover:shadow-md'}"
+      class="page-btn w-10 h-10 ${activeClass} border rounded-xl text-sm font-semibold transition-all"
       data-page="${pageNumber}"
       ${isActive ? 'disabled' : ''}>
       ${pageNumber}
@@ -348,60 +341,3 @@ function updateResultCount() {
 function scrollToTop() {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
-
-function setupBackToTop() {
-  const backToTopBtn = document.getElementById('back-to-top');
-
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 400) {
-      backToTopBtn.classList.add('visible');
-    } else {
-      backToTopBtn.classList.remove('visible');
-    }
-  });
-
-  backToTopBtn.addEventListener('click', scrollToTop);
-}
-
-// ========================================
-// MENU MOBILE
-// ========================================
-
-function setupMobileMenu() {
-  const hamburgerBtn = document.getElementById('hamburger-btn');
-  const mobileMenu = document.getElementById('mobile-menu');
-  const hbTop = document.getElementById('hb-top');
-  const hbMid = document.getElementById('hb-mid');
-  const hbBot = document.getElementById('hb-bot');
-
-  hamburgerBtn.addEventListener('click', () => {
-    const isOpen = mobileMenu.classList.toggle('open');
-    hamburgerBtn.setAttribute('aria-expanded', isOpen);
-
-    if (isOpen) {
-      hbTop.style.transform = 'rotate(45deg) translateY(8px)';
-      hbMid.style.opacity = '0';
-      hbBot.style.transform = 'rotate(-45deg) translateY(-8px)';
-    } else {
-      hbTop.style.transform = '';
-      hbMid.style.opacity = '';
-      hbBot.style.transform = '';
-    }
-  });
-}
-
-function closeMobileMenu() {
-  const mobileMenu = document.getElementById('mobile-menu');
-  const hamburgerBtn = document.getElementById('hamburger-btn');
-  const hbTop = document.getElementById('hb-top');
-  const hbMid = document.getElementById('hb-mid');
-  const hbBot = document.getElementById('hb-bot');
-
-  mobileMenu.classList.remove('open');
-  hamburgerBtn.setAttribute('aria-expanded', 'false');
-  hbTop.style.transform = '';
-  hbMid.style.opacity = '';
-  hbBot.style.transform = '';
-}
-
-window.closeMobileMenu = closeMobileMenu;

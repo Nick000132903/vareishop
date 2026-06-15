@@ -1,31 +1,24 @@
 <!DOCTYPE html>
-<html lang="pt-BR" class="scroll-smooth">
+<html lang="pt-BR" class="scroll-smooth dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>VareiShop — Produtos com os melhores preços</title>
-  <meta name="description" content="VareiShop: recomendações honestas de produtos de todas as categorias com os melhores preços." />
+  <title>VareiShop — Os melhores produtos com os melhores preços</title>
+  <meta name="description" content="VareiShop: produtos selecionados de todas as categorias com os melhores preços. Especial para Pets!" />
   <link rel="icon" href="../src/logo.png" />
 
   <!-- Tailwind CSS via CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
+      darkMode: 'class',
       theme: {
         extend: {
           colors: {
-            brand:  { DEFAULT: '#6366F1', dark: '#4F46E5', light: '#EEF2FF' },
-            leaf:   { DEFAULT: '#10B981', dark: '#059669', light: '#D1FAE5' },
-            ink:    '#1C1C1C',
-            canvas: '#F9F6F0',
-            muted:  '#6B7280',
-            bord:   '#EDE8E0',
+            primary: { DEFAULT: '#8B5CF6', light: '#A78BFA', dark: '#7C3AED' },
+            dark: { DEFAULT: '#0F0F0F', lighter: '#1A1A1A', card: '#1F1F1F' },
           },
-          fontFamily: { sans: ['Poppins', 'sans-serif'] },
-          boxShadow: {
-            card: '0 2px 12px rgba(0,0,0,0.08)',
-            lift: '0 8px 30px rgba(0,0,0,0.13)',
-          },
+          fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
         }
       }
     }
@@ -34,255 +27,156 @@
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
   <style>
-    body { font-family: 'Poppins', sans-serif; background-color: #F9F6F0; }
-
-    .product-card { transition: transform .22s ease, box-shadow .22s ease; }
-    .product-card:hover { transform: translateY(-5px); box-shadow: 0 12px 36px rgba(0,0,0,.13); }
-    .product-card img { transition: transform .35s ease; }
-    .product-card:hover img { transform: scale(1.04); }
-
+    body { font-family: 'Inter', system-ui, sans-serif; }
+    .product-card { transition: transform .2s ease, box-shadow .2s ease; }
+    .product-card:hover { transform: translateY(-4px); }
     #mobile-menu { max-height: 0; overflow: hidden; transition: max-height .3s ease; }
-    #mobile-menu.open { max-height: 300px; }
-
-    #back-to-top { opacity: 0; pointer-events: none; transition: opacity .25s ease; }
-    #back-to-top.visible { opacity: 1; pointer-events: auto; }
+    #mobile-menu.open { max-height: 400px; }
   </style>
 </head>
-<body class="text-ink antialiased">
+<body class="bg-white dark:bg-dark text-gray-900 dark:text-gray-100 transition-colors">
 
   <!-- NAVBAR -->
-  <header id="home" class="sticky top-0 z-50 bg-white border-b border-bord shadow-sm">
-    <div class="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between">
-      <a href="#home" class="flex items-center gap-2 text-[#6366F1] font-extrabold text-xl tracking-tight select-none">
-        <img src="../src/logo.png" alt="VareiShop logo" class="w-40" />
+  <header class="sticky top-0 z-50 bg-white dark:bg-dark-lighter border-b border-gray-200 dark:border-gray-800 backdrop-blur-sm bg-opacity-90 dark:bg-opacity-90">
+    <div class="max-w-7xl mx-auto px-5 h-16 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-2">
+        <img src="../src/logo.png" alt="VareiShop" class="h-8" />
       </a>
-      <nav class="hidden md:flex items-center gap-8">
-        <a href="#home"     class="text-sm font-semibold text-muted hover:text-[#6366F1] transition-colors">Home</a>
-        <a href="produtos.html" class="text-sm font-semibold text-muted hover:text-[#6366F1] transition-colors">Produtos</a>
-        <a href="#sobre"    class="text-sm font-semibold text-muted hover:text-[#6366F1] transition-colors">Sobre</a>
-        <a href="#contato"  class="text-sm font-semibold text-muted hover:text-[#6366F1] transition-colors">Contato</a>
+
+      <nav class="hidden md:flex items-center gap-6">
+        <a href="index.html" class="text-sm font-semibold text-primary hover:text-primary-light transition-colors">Home</a>
+        <a href="produtos.html" class="text-sm font-semibold hover:text-primary transition-colors">Produtos</a>
+        <a href="#pets" class="text-sm font-semibold hover:text-primary transition-colors">Pets</a>
+        <a href="#contato" class="text-sm font-semibold hover:text-primary transition-colors">Contato</a>
       </nav>
-      <button id="hamburger-btn" class="md:hidden flex flex-col gap-1.5 p-1.5" aria-label="Abrir menu" aria-expanded="false">
-        <span class="block w-6 h-0.5 bg-ink rounded transition-all duration-300" id="hb-top"></span>
-        <span class="block w-6 h-0.5 bg-ink rounded transition-all duration-300" id="hb-mid"></span>
-        <span class="block w-6 h-0.5 bg-ink rounded transition-all duration-300" id="hb-bot"></span>
-      </button>
-    </div>
-    <div id="mobile-menu" class="md:hidden bg-white border-t border-bord px-5">
-      <div class="flex flex-col py-4 gap-4">
-        <a href="#home"     class="font-semibold text-sm text-ink hover:text-[#6366F1] transition-colors" onclick="closeMobileMenu()">Home</a>
-        <a href="produtos.html" class="font-semibold text-sm text-ink hover:text-[#6366F1] transition-colors" onclick="closeMobileMenu()">Produtos</a>
-        <a href="#sobre"    class="font-semibold text-sm text-ink hover:text-[#6366F1] transition-colors" onclick="closeMobileMenu()">Sobre</a>
-        <a href="#contato"  class="font-semibold text-sm text-ink hover:text-[#6366F1] transition-colors" onclick="closeMobileMenu()">Contato</a>
+
+      <div class="flex items-center gap-3">
+        <button id="theme-toggle" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" aria-label="Alternar tema">
+          <svg id="theme-icon-light" class="w-5 h-5 hidden dark:block" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"/>
+          </svg>
+          <svg id="theme-icon-dark" class="w-5 h-5 block dark:hidden" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/>
+          </svg>
+        </button>
+
+        <button id="hamburger-btn" class="md:hidden p-2" aria-label="Menu">
+          <div class="w-6 h-5 flex flex-col justify-between">
+            <span class="block w-full h-0.5 bg-current transition-all" id="hb-1"></span>
+            <span class="block w-full h-0.5 bg-current transition-all" id="hb-2"></span>
+            <span class="block w-full h-0.5 bg-current transition-all" id="hb-3"></span>
+          </div>
+        </button>
       </div>
+    </div>
+
+    <div id="mobile-menu" class="md:hidden bg-white dark:bg-dark-lighter border-t border-gray-200 dark:border-gray-800">
+      <nav class="flex flex-col p-4 gap-3">
+        <a href="index.html" class="text-sm font-semibold text-primary">Home</a>
+        <a href="produtos.html" class="text-sm font-semibold hover:text-primary transition-colors">Produtos</a>
+        <a href="#pets" class="text-sm font-semibold hover:text-primary transition-colors">Pets</a>
+        <a href="#contato" class="text-sm font-semibold hover:text-primary transition-colors">Contato</a>
+      </nav>
     </div>
   </header>
 
   <!-- HERO -->
-  <section class="bg-gradient-to-br from-[#FFF8F2] to-[#FFF0E0] border-b border-bord py-20 px-5 text-center">
-    <div class="max-w-3xl mx-auto">
-      <span class="inline-flex items-center gap-1.5 text-xs font-bold tracking-widest uppercase text-[#6366F1] bg-[#6366F1]/10 px-4 py-1.5 rounded-full mb-6">
-        🛍️ Para quem busca qualidade e economia
-      </span>
-      <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight mb-5">
-        Os melhores produtos<br>com os <span class="text-[#6366F1]">melhores preços</span>
+  <section class="py-20 px-5 bg-gradient-to-br from-primary/10 to-primary/5 dark:from-primary/20 dark:to-primary/5">
+    <div class="max-w-5xl mx-auto text-center">
+      <div class="inline-flex items-center gap-2 bg-primary/10 dark:bg-primary/20 px-4 py-2 rounded-full mb-6">
+        <span class="text-sm font-bold text-primary">🛍️ Os melhores produtos</span>
+      </div>
+
+      <h1 class="text-5xl md:text-6xl font-extrabold mb-6 leading-tight">
+        Produtos incríveis<br/>
+        <span class="text-primary">preços imbatíveis</span>
       </h1>
-      <p class="text-muted text-base sm:text-lg max-w-xl mx-auto mb-9 leading-relaxed">
-        Recomendações honestas, ofertas incríveis e produtos avaliados por consumidores exigentes.
+
+      <p class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-10">
+        Encontre os melhores produtos de todas as categorias. Especial destaque para itens pet com ofertas exclusivas.
       </p>
-      <a href="produtos.html"
-        class="inline-block bg-[#6366F1] hover:bg-[#4F46E5] text-white font-bold text-base px-10 py-4 rounded-full shadow-[0_4px_18px_rgba(99,102,241,0.35)] hover:shadow-[0_6px_24px_rgba(99,102,241,0.45)] transition-all duration-200 hover:-translate-y-0.5">
-        Ver produtos →
-      </a>
-      <div class="flex flex-wrap justify-center gap-3 mt-10">
-        <span class="inline-flex items-center gap-2 bg-white border border-bord rounded-xl px-4 py-2 text-sm font-semibold shadow-card">⚡ Ofertas relâmpago</span>
-        <span class="inline-flex items-center gap-2 bg-white border border-bord rounded-xl px-4 py-2 text-sm font-semibold shadow-card">📦 Todas categorias</span>
-        <span class="inline-flex items-center gap-2 bg-white border border-bord rounded-xl px-4 py-2 text-sm font-semibold shadow-card">🔒 Links seguros</span>
-        <span class="inline-flex items-center gap-2 bg-white border border-bord rounded-xl px-4 py-2 text-sm font-semibold shadow-card">🛒 Diversas lojas</span>
-      </div>
-    </div>
-  </section>
 
-  <!-- PRODUTOS -->
-  <section id="produtos" class="py-20 px-5">
-    <div class="max-w-6xl mx-auto">
-      <div class="text-center mb-14">
-        <span class="text-xs font-bold tracking-widest uppercase text-[#10B981]">🛍️ Em destaque</span>
-        <h2 class="text-3xl sm:text-4xl font-extrabold mt-2 mb-3">Produtos favoritos da comunidade</h2>
-        <p class="text-muted text-sm max-w-md mx-auto">Selecionados com cuidado para oferecer o melhor custo-benefício.</p>
-      </div>
-        <!--CARDS PRODUTOS-->
-      <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7"></div>
-
-      <!-- Botão Ver Mais -->
-      <div class="text-center mt-12">
-        <a href="produtos.html"
-          class="inline-block bg-white hover:bg-[#6366F1] text-[#6366F1] hover:text-white font-bold text-sm px-8 py-3 rounded-full border-2 border-[#6366F1] shadow-card hover:shadow-lift transition-all duration-200 hover:-translate-y-0.5">
-          Ver mais produtos →
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="produtos.html" class="inline-block bg-primary hover:bg-primary-dark text-white font-bold px-8 py-4 rounded-xl transition-all hover:scale-105">
+          Ver todos os produtos →
+        </a>
+        <a href="#pets" class="inline-block bg-white dark:bg-dark-card hover:bg-gray-50 dark:hover:bg-gray-800 border-2 border-primary text-primary font-bold px-8 py-4 rounded-xl transition-all">
+          🐾 Produtos para Pets
         </a>
       </div>
     </div>
   </section>
 
-  <!-- CUPOM -->
-  <section id="cupom" class="py-16 px-5 border-t border-bord bg-gradient-to-br from-indigo-50 to-emerald-50">
-    <div class="max-w-2xl mx-auto">
-      <div class="bg-white rounded-3xl shadow-lift border border-bord overflow-hidden">
+  <!-- DESTAQUES -->
+  <section class="py-20 px-5">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl md:text-4xl font-extrabold mb-4">Produtos em destaque</h2>
+        <p class="text-gray-600 dark:text-gray-400">Selecionados especialmente para você</p>
+      </div>
 
-        <!-- Faixa decorativa topo -->
-        <div class="h-2 bg-gradient-to-r from-[#6366F1] to-[#10B981]"></div>
+      <div id="featured-products" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
 
-        <div class="py-10 px-8 sm:px-12 text-center">
-
-          <!-- Ícone -->
-          <div class="text-5xl mb-4">🎟️</div>
-
-          <!-- Eyebrow -->
-          <span class="inline-block text-xs font-bold tracking-widest uppercase text-[#6366F1] bg-[#6366F1]/10 px-4 py-1.5 rounded-full mb-4">
-            Oferta exclusiva VareiShop
-          </span>
-
-          <!-- Título -->
-          <h2 class="text-2xl sm:text-3xl font-extrabold mb-2 leading-snug">
-            Cupom de Desconto Exclusivo
-          </h2>
-
-          <!-- Subtítulo -->
-          <p class="text-muted text-sm mb-8">
-            Ganhe desconto na sua primeira compra
-          </p>
-
-          <!-- Código do cupom -->
-          <div class="flex flex-col sm:flex-row items-center justify-center gap-3 mb-6">
-            <span class="text-xs font-semibold text-muted uppercase tracking-widest">Seu código:</span>
-            <span id="cupom-codigo"
-              class="font-mono font-bold text-xl tracking-[.2em] bg-gray-900 text-white px-6 py-2.5 rounded-xl select-all cursor-pointer border-2 border-dashed border-gray-600 hover:bg-gray-700 transition-colors"
-              title="Clique para copiar"
-              onclick="copiarCupom(this)">
-              VAREISHOP10
-            </span>
-            <button
-              onclick="copiarCupom(document.getElementById('cupom-codigo'))"
-              class="text-xs font-semibold text-[#6366F1] border border-[#6366F1] rounded-full px-4 py-2 hover:bg-[#6366F1]/10 transition-colors whitespace-nowrap">
-              📋 Copiar
-            </button>
-          </div>
-
-          <!-- Feedback de cópia (oculto por padrão) -->
-          <p id="cupom-feedback" class="text-xs text-[#10B981] font-semibold mb-4 opacity-0 transition-opacity duration-300">
-            ✅ Código copiado!
-          </p>
-
-          <!-- Descrição -->
-          <p class="text-muted text-xs mb-8">
-            Válido para lojas parceiras. Consulte condições no site da loja.
-          </p>
-
-          <!-- Botão CTA -->
-          <a href="produtos.html"
-            class="inline-block w-full sm:w-auto bg-[#6366F1] hover:bg-[#4F46E5] text-white font-bold text-sm px-10 py-4 rounded-full shadow-[0_4px_18px_rgba(99,102,241,0.35)] hover:shadow-[0_6px_24px_rgba(99,102,241,0.45)] transition-all duration-200 hover:-translate-y-0.5 text-center">
-            Ver Produtos →
-          </a>
-
-          <!-- Texto auxiliar -->
-          <p class="text-[10px] text-muted mt-4">
-            Use o cupom no checkout das lojas parceiras
-          </p>
-        </div>
+      <div class="text-center mt-12">
+        <a href="produtos.html" class="inline-block bg-primary hover:bg-primary-dark text-white font-bold px-8 py-3 rounded-xl transition-all">
+          Ver todos →
+        </a>
       </div>
     </div>
   </section>
 
-  <!-- SOBRE -->
-  <section id="sobre" class="py-20 px-5 border-t border-bord bg-white">
-    <div class="max-w-6xl mx-auto">
-      <div class="grid md:grid-cols-2 gap-14 items-center">
-        <div class="hidden md:flex items-center justify-center bg-gradient-to-br from-[#6366F1]/10 to-[#10B981]/10 rounded-3xl aspect-[4/3] text-8xl border border-bord select-none">
-          🛍️
-        </div>
-        <div>
-          <span class="text-xs font-bold tracking-widest uppercase text-[#6366F1]">Quem somos</span>
-          <h2 class="text-3xl font-extrabold mt-2 mb-4 leading-snug">Um canal feito por<br>consumidores para consumidores</h2>
-          <p class="text-muted text-sm leading-relaxed mb-4">
-            O <strong class="text-ink">VareiShop</strong> é um site <strong class="text-ink">independente</strong> criado para ajudar consumidores a encontrar os melhores produtos de todas as categorias com segurança e economia. Não somos loja — somos um canal de recomendação honesta.
-          </p>
-          <p class="text-muted text-sm leading-relaxed mb-8">
-            Alguns links deste site são <strong class="text-ink">links de afiliado</strong>. Ao comprar por eles, você <strong class="text-ink">não paga nada a mais</strong>, e nós recebemos uma pequena comissão que ajuda a manter o site. Trabalhamos com diversas lojas parceiras como <strong class="text-ink">Shopee, Mercado Livre, Amazon e muito mais</strong>. 🙌
-          </p>
-          <div class="flex flex-col gap-4">
-            <div class="flex items-start gap-4">
-              <div class="w-10 h-10 flex-shrink-0 rounded-xl bg-[#10B981]/15 flex items-center justify-center text-base">🔍</div>
-              <div>
-                <p class="font-bold text-sm">Pesquisa honesta</p>
-                <p class="text-xs text-muted">Avaliamos cada produto antes de recomendar.</p>
-              </div>
-            </div>
-            <div class="flex items-start gap-4">
-              <div class="w-10 h-10 flex-shrink-0 rounded-xl bg-[#10B981]/15 flex items-center justify-center text-base">💚</div>
-              <div>
-                <p class="font-bold text-sm">Qualidade garantida</p>
-                <p class="text-xs text-muted">Só indicamos o que realmente vale a pena.</p>
-              </div>
-            </div>
-            <div class="flex items-start gap-4">
-              <div class="w-10 h-10 flex-shrink-0 rounded-xl bg-[#10B981]/15 flex items-center justify-center text-base">💰</div>
-              <div>
-                <p class="font-bold text-sm">Melhor custo-benefício</p>
-                <p class="text-xs text-muted">Comparamos preços para você economizar.</p>
-              </div>
-            </div>
-          </div>
-        </div>
+  <!-- SEÇÃO PETS -->
+  <section id="pets" class="py-20 px-5 bg-gradient-to-br from-primary/5 to-transparent dark:from-primary/10">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-12">
+        <div class="text-5xl mb-4">🐾</div>
+        <h2 class="text-3xl md:text-4xl font-extrabold mb-4">Especial Pets</h2>
+        <p class="text-gray-600 dark:text-gray-400">Tudo para o seu melhor amigo</p>
+      </div>
+
+      <div id="pet-products" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+
+      <div class="text-center mt-12">
+        <a href="produtos.html?categoria=pets" class="inline-block bg-primary hover:bg-primary-dark text-white font-bold px-8 py-3 rounded-xl transition-all">
+          Ver mais produtos para pets →
+        </a>
       </div>
     </div>
   </section>
 
   <!-- CONTATO -->
-  <section id="contato" class="py-20 px-5 bg-gradient-to-br from-[#FFF8F2] to-[#F0F9F0] border-t border-bord">
-    <div class="max-w-md mx-auto">
-      <div class="bg-white rounded-2xl border border-bord shadow-card p-10 text-center">
+  <section id="contato" class="py-20 px-5 border-t border-gray-200 dark:border-gray-800">
+    <div class="max-w-md mx-auto text-center">
+      <div class="bg-white dark:bg-dark-card rounded-2xl border border-gray-200 dark:border-gray-800 p-10">
         <div class="text-5xl mb-4">✉️</div>
-        <h2 class="text-2xl font-extrabold mb-2">Fale com a gente</h2>
-        <p class="text-muted text-sm mb-8 leading-relaxed">
-          Tem dúvida, sugestão de produto ou quer colaborar? A gente responde rapidinho.
+        <h2 class="text-2xl font-extrabold mb-3">Fale com a gente</h2>
+        <p class="text-gray-600 dark:text-gray-400 text-sm mb-8">
+          Dúvidas, sugestões ou parcerias? Entre em contato!
         </p>
-        <div class="flex flex-col gap-3">
-          <a href="mailto:nirabelon9r@gmail.com"
-            class="flex items-center justify-center gap-2.5 font-semibold text-sm text-ink bg-canvas border border-bord rounded-full px-6 py-3 hover:border-[#6366F1] hover:shadow-[0_0_0_3px_rgba(99,102,241,0.12)] transition-all">
-            📧 nirabelon9r@gmail.com
-          </a>
-          <a href="https://instagram.com/vareishop" target="_blank" rel="noopener noreferrer"
-            class="flex items-center justify-center gap-2.5 font-semibold text-sm text-ink bg-canvas border border-bord rounded-full px-6 py-3 hover:border-pink-400 hover:shadow-[0_0_0_3px_rgba(225,48,108,0.12)] transition-all">
-            📸 @vareishop no Instagram
-          </a>
-        </div>
+        <a href="mailto:nirabelon9r@gmail.com"
+          class="inline-flex items-center justify-center gap-2 w-full bg-primary hover:bg-primary-dark text-white font-semibold px-6 py-3 rounded-xl transition-all">
+          📧 nirabelon9r@gmail.com
+        </a>
       </div>
     </div>
   </section>
 
   <!-- FOOTER -->
-  <footer class="bg-[#1C1C1C] text-[#9CA3AF] py-12 px-5">
-    <div class="max-w-3xl mx-auto text-center">
-      <p class="text-[#6366F1] font-extrabold text-lg mb-4">🛍️ VareiShop</p>
-      <p class="text-xs leading-relaxed mb-5">
-        Este site participa de <strong class="text-[#D1D5DB]">programas de afiliados de diversas lojas parceiras</strong>.
-        Isso significa que podemos ganhar comissões sobre vendas realizadas através dos nossos links,
-        sem qualquer custo adicional para você. Nossas recomendações são sempre honestas e baseadas
-        na qualidade dos produtos.
+  <footer class="bg-dark-lighter dark:bg-black py-12 px-5 border-t border-gray-800">
+    <div class="max-w-4xl mx-auto text-center">
+      <p class="text-primary font-extrabold text-lg mb-4">VareiShop</p>
+      <p class="text-gray-400 text-xs mb-6">
+        Este site participa de programas de afiliados. Podemos receber comissões sobre vendas
+        realizadas através dos nossos links, sem custo adicional para você.
       </p>
-      <p class="text-xs text-[#4B5563]">© 2026 VareiShop — Todos os direitos reservados.</p>
+      <p class="text-gray-600 text-xs">© 2026 VareiShop — Todos os direitos reservados.</p>
     </div>
   </footer>
 
-  <!-- BOTÃO VOLTAR AO TOPO -->
-  <button id="back-to-top"
-    class="fixed bottom-6 right-6 w-11 h-11 bg-[#6366F1] hover:bg-[#4F46E5] text-white rounded-full flex items-center justify-center text-lg shadow-[0_4px_16px_rgba(99,102,241,0.4)] hover:scale-110 transition-all z-50"
-    aria-label="Voltar ao topo">↑</button>
-
-  <script src="../js/utils.js"></script>
+  <script src="../js/theme.js"></script>
   <script src="../js/main.js"></script>
 </body>
 </html>
