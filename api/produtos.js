@@ -1,34 +1,36 @@
 import { sql } from '@vercel/postgres';
 
 export default async function handler(req, res) {
-  if (req.method !== 'GET') {
-    return res.status(405).json({ error: 'Method not allowed' });
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
   }
-
+  
   try {
     const { rows } = await sql`
-      SELECT
-        id,
-        nome,
-        descricao,
-        preco,
-        img,
-        link,
-        badge,
-        categorias
-      FROM produtos
-      ORDER BY id DESC
+      SELECT 
+        id, 
+        nome, 
+        preco, 
+        descricao, 
+        badge, 
+        link, 
+        img, 
+        categoria, 
+        destaque
+      FROM produtos 
+      ORDER BY id
     `;
-
-    return res.status(200).json({
-      success: true,
-      produtos: rows
-    });
+    
+    res.status(200).json(rows);
+    
   } catch (error) {
-    console.error('Database error:', error);
-    return res.status(500).json({
-      success: false,
-      error: 'Erro ao buscar produtos'
+    console.error('Erro ao buscar produtos:', error);
+    res.status(500).json({ 
+      erro: 'Erro ao carregar produtos',
+      detalhe: error.message 
     });
   }
 }
