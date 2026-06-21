@@ -1,0 +1,25 @@
+{
+  "name": "vareishop",
+  "version": "1.0.0",
+  "description": "Site de marketing de afiliado com produtos para pets e outras categorias",
+  "type": "module",
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "vercel build",
+    "deploy": "vercel --prod"
+  },
+  "keywords": [
+    "afiliados",
+    "pets",
+    "e-commerce",
+    "marketing"
+  ],
+  "author": "Nick000132903",
+  "license": "MIT",
+  "dependencies": {
+    "@vercel/postgres": "^0.10.0"
+  },
+  "devDependencies": {
+    "vercel": "^37.0.0"
+  }
+}
