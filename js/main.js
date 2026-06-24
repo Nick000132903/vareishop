@@ -1,52 +1,44 @@
 // ========================================
-// MAIN.JS - Homepage Logic
+// MAIN.JS - Homepage Logic (CORRIGIDO)
 // ========================================
+
+// Função para buscar produtos
+async function buscarProdutos(endpoint) {
+  try {
+    const resposta = await fetch(endpoint);
+    if (!resposta.ok) throw new Error(`Erro ${resposta.status}`);
+    const dados = await resposta.json();
+    
+    // Retorna o array de produtos ou array vazio
+    if (dados.success && dados.produtos) {
+      return dados.produtos;
+    }
+    return [];
+  } catch (error) {
+    console.error('Erro ao buscar produtos:', error);
+    return [];
+  }
+}
 
 // Carregar produtos em destaque
 async function loadFeaturedProducts() {
-  try {
-    const response = await fetch('/api/produtos-destaque');
-    if (!response.ok) throw new Error('Erro ao carregar produtos');
-
-    const data = await response.json();
-
-    if (data.success && data.produtos) {
-      renderProductCards('featured-products', data.produtos);
-    } else {
-      console.warn('Nenhum produto em destaque encontrado');
-    }
-  } catch (error) {
-    console.error('Erro ao carregar produtos em destaque:', error);
-  }
+  const produtos = await buscarProdutos('/api/produtos-destaque');
+  renderProductCards('featured-products', produtos);
 }
 
 // Carregar produtos para pets
 async function loadPetProducts() {
-  try {
-    const response = await fetch('/api/produtos?categoria=pets');
-    if (!response.ok) throw new Error('Erro ao carregar produtos');
-
-    const data = await response.json();
-
-    if (data.success && data.produtos) {
-      renderProductCards('pet-products', data.produtos);
-    } else {
-      console.warn('Nenhum produto da categoria pets encontrado');
-    }
-  } catch (error) {
-    console.error('Erro ao carregar produtos para pets:', error);
-  }
+  const produtos = await buscarProdutos('/api/produtos?categoria=pets');
+  renderProductCards('pet-products', produtos);
 }
 
 // Renderizar cards de produtos
 function renderProductCards(containerId, products) {
   const container = document.getElementById(containerId);
-  if (!container) {
-    console.warn(`Container ${containerId} não encontrado`);
-    return;
-  }
+  if (!container) return;
 
-  if (!products || products.length === 0) {
+  // Verifica se products é um array
+  if (!Array.isArray(products) || products.length === 0) {
     container.innerHTML = `
       <div class="col-span-full text-center py-10">
         <p class="text-gray-500 dark:text-gray-400">Nenhum produto disponível no momento.</p>
