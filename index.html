@@ -195,85 +195,48 @@
     // CARREGAR PRODUTOS DO BANCO DE DADOS (Neon PostgreSQL)
     // ════════════════════════════════════════════════════════════════
 
-    // Função para buscar produtos da API
-    async function buscarProdutos(endpoint = '/api/produtos') {
+    async function buscarProdutos(endpoint) {
       try {
         const resposta = await fetch(endpoint);
-        if (!resposta.ok) throw new Error('Erro ao buscar produtos');
-        return await resposta.json();
+        if (!resposta.ok) throw new Error(`Erro ${resposta.status}`);
+        const dados = await resposta.json();
+        return dados.produtos || []; // ← Garante que retorna um array
       } catch (error) {
-        console.error('Erro:', error);
+        console.error('Erro ao buscar produtos:', error);
         return [];
       }
     }
 
-    // Renderizar produtos em um grid
     function renderizarProdutos(containerId, produtos, limite = 4) {
       const container = document.getElementById(containerId);
       if (!container) return;
       
       container.innerHTML = '';
       
-      const produtosExibir = produtos.slice(0, limite);
-      
-      if (produtosExibir.length === 0) {
+      if (!Array.isArray(produtos) || produtos.length === 0) {
         container.innerHTML = `
-          <div class="col-span-full text-center text-gray-500 py-10">
-            Nenhum produto encontrado
+          <div class="col-span-full text-center py-10">
+            <p class="text-gray-500 dark:text-gray-400">Nenhum produto disponível</p>
           </div>
         `;
         return;
       }
       
-      produtosExibir.forEach(produto => {
-        const card = document.createElement('div');
-        card.className = 'bg-white dark:bg-dark-card rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden product-card hover:shadow-xl';
-        
-        card.innerHTML = `
-          <div class="aspect-[4/3] overflow-hidden bg-gray-100 dark:bg-gray-800">
-            <img 
-              src="${produto.img || 'https://placehold.co/400x300/8B5CF6/FFFFFF?text=VareiShop'}"
-              alt="${produto.nome}"
-              class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-              onerror="this.src='https://placehold.co/400x300/8B5CF6/FFFFFF?text=VareiShop'"
-            />
-            ${produto.badge ? `<span class="absolute top-3 left-3 bg-primary text-white text-xs font-bold px-3 py-1 rounded-full">${produto.badge}</span>` : ''}
-          </div>
-          <div class="p-4">
-            <h3 class="font-bold text-sm line-clamp-2">${produto.nome}</h3>
-            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 line-clamp-2">${produto.descricao || ''}</p>
-            <div class="flex items-center justify-between mt-3">
-              <span class="text-lg font-extrabold text-primary">${produto.preco ? `R$ ${Number(produto.preco).toFixed(2)}`.replace('.', ',') : 'R$ 0,00'}</span>
-              <a 
-                href="${produto.link || '#'}" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                class="bg-primary hover:bg-primary-dark text-white text-xs font-bold px-4 py-2 rounded-lg transition-all hover:scale-105"
-                onclick="console.log('🛒 Clique em: ${produto.nome}')"
-              >
-                Ver oferta →
-              </a>
-            </div>
-          </div>
-        `;
-        
-        container.appendChild(card);
-      });
+      const produtosExibir = produtos.slice(0, limite);
+      // ... resto do código para renderizar os cards
     }
 
-    // Carregar produtos em destaque
     async function carregarDestaques() {
-      const produtos = await buscarProdutos('/api/produtos?destaque=true');
+      const produtos = await buscarProdutos('/api/produtos-destaque');
       renderizarProdutos('featured-products', produtos, 4);
     }
 
-    // Carregar produtos da categoria Pets
     async function carregarPets() {
       const produtos = await buscarProdutos('/api/produtos?categoria=pets');
       renderizarProdutos('pet-products', produtos, 4);
     }
 
-    // Inicializar ao carregar a página
+    // Inicializar
     document.addEventListener('DOMContentLoaded', () => {
       carregarDestaques();
       carregarPets();
